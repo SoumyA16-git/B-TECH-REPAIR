@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, MapPin, CheckCircle2 } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { BUSINESS_INFO } from '../data/repairData';
 
 interface TrustBarProps {
@@ -8,71 +8,57 @@ interface TrustBarProps {
 
 export const TrustBar: React.FC<TrustBarProps> = ({ onReviewsClick }) => {
   return (
-    <div className="border-b border-[#CCD4D9] bg-white py-6">
+    <section className="relative w-full bg-[#F5F5F2] text-[#181B1D] py-12 sm:py-20 lg:py-24 border-b border-[#CCD4D9] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center divide-y md:divide-y-0 md:divide-x divide-[#CCD4D9]">
+        
+        {/* Subtle horizontal line running through the section above */}
+        <div className="w-full h-px bg-[#BEC8CD]/60 mb-8 sm:mb-16" />
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-baseline">
           
-          {/* Factual Google Rating */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1 text-[#D9822B]">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-current" />
-              ))}
-            </div>
-            <div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-xl font-bold font-mono tracking-tight text-[#171A1D]">5.0</span>
-                <span className="text-xs text-[#171A1D]/60 font-mono">/ 468 GOOGLE REVIEWS</span>
+          {/* Left Column: 5.0 and 468 customer reviews */}
+          <div className="lg:col-span-5 space-y-2">
+            <div className="flex items-baseline gap-3">
+              <span className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tight text-[#181B1D] leading-none">
+                {BUSINESS_INFO.rating}
+              </span>
+              <div className="flex items-center text-[#D17A2A]">
+                <Star className="w-5 h-5 sm:w-6 sm:h-6 fill-[#D17A2A] stroke-none" />
               </div>
-              <button 
+            </div>
+            
+            <p className="font-mono text-xs sm:text-base text-[#181B1D]/75 tracking-normal">
+              {BUSINESS_INFO.reviewCount} customer reviews on Google
+            </p>
+
+            {onReviewsClick && (
+              <button
                 onClick={onReviewsClick}
-                className="text-[11px] text-[#164B70] hover:underline block text-left cursor-pointer"
+                className="inline-block pt-1 text-xs font-mono text-[#16496B] hover:text-[#181B1D] underline underline-offset-4 cursor-pointer"
               >
-                Read verified customer reviews →
+                Read verified local accounts →
               </button>
-            </div>
+            )}
           </div>
 
-          {/* Doorstep Service Coverage */}
-          <div className="pt-4 md:pt-0 md:pl-6 flex items-start gap-3">
-            <MapPin className="w-5 h-5 text-[#164B70] shrink-0 mt-0.5" />
-            <div>
-              <div className="text-xs font-mono uppercase tracking-wider text-[#171A1D]/60">
-                DOORSTEP SERVICE
-              </div>
-              <div className="text-sm font-semibold text-[#171A1D]">
-                BHUBANESWAR + NEARBY AREAS
-              </div>
-              <div className="text-xs text-[#171A1D]/70 mt-0.5">
-                Patia · Cuttack · Chandrasekharpur & Suburbs
-              </div>
+          {/* Right Column: Spacious statement */}
+          <div className="lg:col-span-7 flex flex-col justify-between">
+            <p className="text-lg sm:text-2xl lg:text-3xl font-medium text-[#181B1D] leading-snug tracking-tight text-balance">
+              Professional appliance repair, doorstep service and practical solutions for everyday equipment.
+            </p>
+
+            <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-[#BEC8CD]/40 flex flex-wrap gap-4 sm:gap-8 text-[11px] sm:text-xs font-mono text-[#181B1D]/60 uppercase tracking-wider">
+              <div>LOCATION: PATIA, BHUBANESWAR</div>
+              <div>SERVICE: RESIDENTIAL & COMMERCIAL</div>
+              <div>SCOPE: ON-SITE DIAGNOSIS</div>
             </div>
           </div>
-
-          {/* Appliance Categories */}
-          <div className="pt-4 md:pt-0 md:pl-6 flex items-start gap-3">
-            <CheckCircle2 className="w-5 h-5 text-[#164B70] shrink-0 mt-0.5" />
-            <div>
-              <div className="text-xs font-mono uppercase tracking-wider text-[#171A1D]/60">
-                CORE TECHNICAL FOCUS
-              </div>
-              <div className="text-xs sm:text-sm font-medium text-[#171A1D] flex flex-wrap gap-x-2">
-                <span>AC</span>
-                <span>·</span>
-                <span>FRIDGE</span>
-                <span>·</span>
-                <span>WASHING MACHINE</span>
-                <span>·</span>
-                <span>MICROWAVE</span>
-              </div>
-              <div className="text-[11px] text-[#171A1D]/60 mt-0.5">
-                Doorstep diagnostic & component repair
-              </div>
-            </div>
-          </div>
-
         </div>
+
+        {/* Subtle horizontal line running through the section below */}
+        <div className="w-full h-px bg-[#BEC8CD]/60 mt-8 sm:mt-12 sm:mb-2" />
+
       </div>
-    </div>
+    </section>
   );
 };

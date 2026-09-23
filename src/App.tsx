@@ -5,14 +5,14 @@ import { Hero } from './components/Hero';
 import { TrustBar } from './components/TrustBar';
 import { ServiceIndex } from './components/ServiceIndex';
 import { ACIssueIndex } from './components/ACIssueIndex';
-import { JetPumpFeature } from './components/JetPumpFeature';
-import { RepairProcess } from './components/RepairProcess';
+import { FieldBreakSection } from './components/FieldBreakSection';
 import { DiagnosticChecklist } from './components/DiagnosticChecklist';
-import { TransparencySection } from './components/TransparencySection';
+import { RepairProcess } from './components/RepairProcess';
 import { ApplianceCoverage } from './components/ApplianceCoverage';
+import { ServiceDetailsSection } from './components/ServiceDetailsSection';
 import { ReviewsSection } from './components/ReviewsSection';
 import { ServiceAreasSection } from './components/ServiceAreasSection';
-import { FAQSection } from './components/FAQSection';
+import { ConversionSection } from './components/ConversionSection';
 import { Footer } from './components/Footer';
 import { BookingDeskModal } from './components/BookingDeskModal';
 import { ServiceDetailPage } from './components/ServiceDetailPage';
@@ -59,8 +59,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F6F7F5] text-[#171A1D]">
-      {/* Top Bar strictly following 3-Zone Top Bar Contract */}
+    <div className="min-h-screen flex flex-col bg-[#F5F5F2] text-[#181B1D]">
+      {/* 3-Zone Top Bar Contract */}
       <Header
         currentView={currentView}
         onNavigate={handleNavigate}
@@ -71,7 +71,7 @@ export default function App() {
       <main className="flex-1">
         {currentView === 'home' && (
           <>
-            {/* 4.1 Hero — “Tell Us What's Wrong” */}
+            {/* SECTION 01 — IMMERSIVE HERO */}
             <Hero
               onOpenBooking={() => handleOpenBooking('AC')}
               onExploreServices={() => {
@@ -80,55 +80,57 @@ export default function App() {
               }}
             />
 
-            {/* 5. Immediate Trust Layer (5.0 ★ / 468 Reviews) */}
+            {/* SECTION 02 — VISUAL TRANSITION (5.0 / 468 Customer Reviews) */}
             <TrustBar
               onReviewsClick={() => setCurrentView('reviews')}
             />
 
-            {/* 6. Main Service Navigation — What Needs Fixing? */}
+            {/* SECTION 03 — “WHAT'S BROKEN?” (Vertical Oversized Service Index) */}
             <ServiceIndex
               onSelectService={handleSelectService}
               onBookCategory={(category) => handleOpenBooking(category as ApplianceCategory)}
             />
 
-            {/* 7. AC Services — Primary Focus ("When Your AC Isn't Doing Its Job") */}
+            {/* SECTION 04 — AC FEATURE (Split Screen Takeover) */}
             <ACIssueIndex
               onSelectService={handleSelectService}
               onSelectIssueForBooking={(issueDesc) => handleOpenBooking('AC', issueDesc)}
             />
 
-            {/* 8. Jet Pump Cleaning Feature ("Deep Cleaning for Better Maintenance") */}
-            <JetPumpFeature
-              onSelectService={handleSelectService}
-              onBookJetPump={() => handleOpenBooking('AC', 'AC Jet Pump Machine Deep Wash Service')}
-            />
+            {/* SECTION 05 — FULL-BLEED IMAGE BREAK ("We come to the problem.") */}
+            <FieldBreakSection />
 
-            {/* 9. Repair Process — Signature Service Ticket */}
-            <RepairProcess />
-
-            {/* 10. “Repair What Actually Needs Repair” */}
+            {/* SECTION 06 — THE DIAGNOSIS (Dark Graphite "Find the fault first.") */}
             <DiagnosticChecklist />
 
-            {/* 11. Genuine Parts & Service Transparency */}
-            <TransparencySection />
+            {/* SECTION 07 — REPAIR PROCESS (Horizontal Timeline 01–05) */}
+            <RepairProcess />
 
-            {/* 12. Appliance Coverage — Large Asymmetric Layout */}
+            {/* SECTION 08 — APPLIANCE PHOTO COLLAGE (Asymmetric Editorial Collage) */}
             <ApplianceCoverage
               onSelectService={handleSelectService}
             />
 
-            {/* 13. Reviews — "People Remember the Service." */}
+            {/* SECTION 09 — SERVICE DETAILS (Alternating Editorial Rows) */}
+            <ServiceDetailsSection
+              onSelectService={handleSelectService}
+              onBookService={(cat, issue) => handleOpenBooking(cat as ApplianceCategory, issue)}
+            />
+
+            {/* SECTION 10 — CUSTOMER REVIEWS (Editorial Testimonial Layout) */}
             <ReviewsSection
               onViewAllReviews={() => setCurrentView('reviews')}
             />
 
-            {/* 14. Service Areas — "We Come to You." */}
+            {/* SECTION 11 — SERVICE AREA (Serving Bhubaneswar & Nearby Areas / PATIA) */}
             <ServiceAreasSection
               onOpenBooking={() => handleOpenBooking('AC')}
             />
 
-            {/* Real FAQs */}
-            <FAQSection />
+            {/* SECTION 12 — FINAL CONVERSION SECTION (Visually Strong Dark Section) */}
+            <ConversionSection
+              onOpenBooking={() => handleOpenBooking('AC')}
+            />
           </>
         )}
 
@@ -169,7 +171,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Quiet Technical Footer */}
+      {/* Minimal and Strong Footer */}
       <Footer
         onNavigate={handleNavigate}
         onOpenBooking={() => handleOpenBooking('AC')}

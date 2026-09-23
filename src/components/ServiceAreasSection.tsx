@@ -1,104 +1,122 @@
 import React from 'react';
-import { MapPin, Navigation, Clock, Phone } from 'lucide-react';
-import { SERVICE_AREAS_LIST, BUSINESS_INFO } from '../data/repairData';
+import { MapPin, Navigation, ArrowUpRight } from 'lucide-react';
+import { BUSINESS_INFO } from '../data/repairData';
 
 interface ServiceAreasSectionProps {
-  onOpenBooking: () => void;
+  onOpenBooking?: () => void;
 }
 
+const LOCAL_AREAS = [
+  'Patia', 'KIIT Campus', 'Infocity', 'Chandrasekharpur', 'Sailashree Vihar',
+  'Damana', 'Jayadev Vihar', 'Nayapalli', 'Saheed Nagar', 'Master Canteen',
+  'Khandagiri', 'Old Town', 'Cuttack Link Road', 'CDA Sector'
+];
+
 export const ServiceAreasSection: React.FC<ServiceAreasSectionProps> = ({ onOpenBooking }) => {
+  const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    'B-Tech Repair Nandankanan Rd, near Koel Campus, Sishu Vihar, Patia, Bhubaneswar, Odisha 751024'
+  )}`;
+
   return (
-    <section id="service-areas" className="py-16 md:py-24 border-b border-[#CCD4D9] bg-[#F6F7F5]">
+    <section className="relative w-full bg-[#F5F5F2] text-[#181B1D] py-20 sm:py-32 border-b border-[#CCD4D9] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="max-w-3xl mb-12">
-          <div className="text-xs font-mono uppercase tracking-wider text-[#164B70] font-semibold">
-            LOCAL DOORSTEP REACH
-          </div>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#171A1D] mt-1.5">
-            We Come to You.
+        {/* Section Header */}
+        <div className="pb-8 mb-12 border-b border-[#CCD4D9]">
+          <span className="font-mono text-xs text-[#16496B] tracking-wider uppercase">
+            LOCATION 04 / FIELD DISPATCH RADIUS
+          </span>
+          <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#181B1D] mt-2">
+            Serving Bhubaneswar and nearby areas.
           </h2>
-          <div className="text-base sm:text-lg font-semibold text-[#164B70] mt-2">
-            Bhubaneswar · Cuttack · Nearby Areas
-          </div>
-          <p className="text-xs sm:text-sm text-[#171A1D]/70 mt-1">
-            Service availability may vary depending on location.
-          </p>
         </div>
 
-        {/* Coverage Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SERVICE_AREAS_LIST.map((area, idx) => (
-            <div 
-              key={idx}
-              className="bg-white border border-[#CCD4D9] p-6 space-y-3 hover:border-[#164B70] transition-colors"
-            >
-              <div className="flex items-center justify-between pb-2 border-b border-[#CCD4D9]/60">
-                <span className="font-bold text-base text-[#171A1D]">
-                  {area.name}
-                </span>
-                <span className="font-mono text-[10px] text-[#164B70] bg-[#EAEFF2] px-2 py-0.5 border border-[#CCD4D9]">
-                  {area.zone}
-                </span>
+        {/* Strong Geographic Composition */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          
+          {/* Left Column: Visual Anchor "PATIA" + Address + Get Directions */}
+          <div className="lg:col-span-6 space-y-8">
+            
+            {/* Visual Anchor: PATIA */}
+            <div>
+              <span className="font-mono text-xs text-[#181B1D]/50 uppercase tracking-widest block mb-1">
+                DISPATCH HUB & WORKSHOP BASE
+              </span>
+              <div className="text-6xl sm:text-8xl font-bold tracking-tighter text-[#181B1D]">
+                PATIA
               </div>
+              <div className="text-lg sm:text-xl font-medium text-[#16496B] mt-1">
+                Bhubaneswar · Cuttack · Nearby Areas
+              </div>
+            </div>
 
-              <div className="space-y-1 text-xs">
-                <div className="text-[#171A1D]/50 font-mono text-[10px] uppercase">
-                  KEY LANDMARKS / SECTORS:
+            {/* Address */}
+            <div className="p-6 bg-[#EAECE9]/50 border border-[#CCD4D9] space-y-3">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-[#D17A2A] shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-mono text-xs text-[#181B1D]/60 uppercase tracking-wider mb-1">
+                    WORKSHOP & DESK LOCATION
+                  </div>
+                  <p className="text-sm sm:text-base font-semibold text-[#181B1D] leading-snug">
+                    {BUSINESS_INFO.address}
+                  </p>
                 </div>
-                <p className="text-[#171A1D]/80">
-                  {area.landmarks}
-                </p>
               </div>
 
-              <div className="pt-2 flex items-center justify-between text-[11px] font-mono text-[#171A1D]/70 border-t border-[#CCD4D9]/50">
-                <span className="flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5 text-[#D9822B]" />
-                  <span>{area.timing}</span>
-                </span>
-                <button
-                  onClick={onOpenBooking}
-                  className="text-[#164B70] hover:underline font-semibold cursor-pointer"
+              <div className="pt-2 flex flex-wrap gap-4">
+                <a
+                  href={directionsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-3 bg-[#181B1D] hover:bg-[#16496B] text-white text-xs font-mono tracking-wider transition-colors cursor-pointer"
                 >
-                  Book Here →
-                </button>
+                  <Navigation className="w-3.5 h-3.5 text-[#D17A2A]" />
+                  <span>GET DIRECTIONS</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+
+                {onOpenBooking && (
+                  <button
+                    onClick={onOpenBooking}
+                    className="inline-flex items-center gap-2 px-5 py-3 border border-[#CCD4D9] hover:bg-white text-[#181B1D] text-xs font-mono tracking-wider transition-colors cursor-pointer"
+                  >
+                    <span>SCHEDULE DOORSTEP VISIT</span>
+                  </button>
+                )}
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* Physical Service Desk Location Anchor */}
-        <div className="mt-8 border border-[#CCD4D9] bg-white p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-1">
-            <div className="text-xs font-mono text-[#164B70] font-semibold uppercase">
-              REGISTERED SERVICE HUB
-            </div>
-            <h4 className="text-base font-bold text-[#171A1D]">
-              B-Tech Repair Service Center
-            </h4>
-            <p className="text-xs text-[#171A1D]/75">
-              {BUSINESS_INFO.address}
-            </p>
-            <div className="text-[11px] font-mono text-[#171A1D]/60 pt-1">
-              {BUSINESS_INFO.hours}
+            <div className="font-mono text-xs text-[#181B1D]/70 space-y-1">
+              <div>DAILY DISPATCH: 8:00 AM – 9:00 PM (MONDAY TO SUNDAY)</div>
+              <div>AVERAGE DOORSTEP TRANSIT TIME: 45 – 90 MINUTES</div>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <a
-              href={`tel:${BUSINESS_INFO.phoneClean}`}
-              className="py-2.5 px-4 bg-[#164B70] hover:bg-[#103753] text-white text-xs font-mono font-medium transition-colors flex items-center gap-2"
-            >
-              <Phone className="w-3.5 h-3.5 text-[#D9822B]" />
-              <span>{BUSINESS_INFO.phone}</span>
-            </a>
-            <button
-              onClick={onOpenBooking}
-              className="py-2.5 px-4 bg-[#171A1D] hover:bg-black text-white text-xs font-medium transition-colors cursor-pointer"
-            >
-              Check Technician Availability
-            </button>
+          {/* Right Column: Clean Grid of Covered Sectors & Landmarks */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="font-mono text-xs text-[#181B1D]/60 uppercase tracking-wider">
+              COVERED RESIDENTIAL & COMMERCIAL LOCALITIES
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {LOCAL_AREAS.map((area) => (
+                <div
+                  key={area}
+                  className="p-3 border border-[#CCD4D9] bg-white/60 font-mono text-xs text-[#181B1D] flex items-center justify-between"
+                >
+                  <span>{area}</span>
+                  <span className="w-1.5 h-1.5 bg-[#16496B]" />
+                </div>
+              ))}
+            </div>
+
+            {/* Plain authentic geographical note */}
+            <div className="p-4 bg-[#EAECE9]/40 border border-[#CCD4D9] text-xs font-mono text-[#181B1D]/80">
+              Field technicians carry portable manifold gauges, replacement capacitors, and jet pump cleaning tools directly to customer homes across these zones.
+            </div>
           </div>
+
         </div>
 
       </div>

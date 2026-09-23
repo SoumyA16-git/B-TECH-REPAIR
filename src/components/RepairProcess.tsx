@@ -1,127 +1,96 @@
 import React from 'react';
-import { ArrowDown, CheckCircle, Wrench, Shield, ClipboardList, Activity } from 'lucide-react';
+
+interface TimelineStep {
+  number: string;
+  title: string;
+  sentence: string;
+}
+
+const TIMELINE_STEPS: TimelineStep[] = [
+  {
+    number: '01',
+    title: 'REQUEST',
+    sentence: 'Call or book online with your appliance type and symptom.'
+  },
+  {
+    number: '02',
+    title: 'INSPECT',
+    sentence: 'Technician arrives at your doorstep with diagnostic tools.'
+  },
+  {
+    number: '03',
+    title: 'DIAGNOSE',
+    sentence: 'Root cause identified and clear quotation provided before work.'
+  },
+  {
+    number: '04',
+    title: 'REPAIR',
+    sentence: 'Defects corrected using genuine manufacturer-grade parts.'
+  },
+  {
+    number: '05',
+    title: 'TEST',
+    sentence: 'Complete operational run verified under real load with customer.'
+  }
+];
 
 export const RepairProcess: React.FC = () => {
-  const steps = [
-    {
-      num: '01',
-      title: 'REQUEST',
-      subtitle: 'Tell us what isn\'t working.',
-      detail: 'Call our desk or fill out the service intake. Share the appliance model, observed symptoms, and your location in Bhubaneswar or Cuttack.',
-      icon: <ClipboardList className="w-4 h-4 text-[#164B70]" />
-    },
-    {
-      num: '02',
-      title: 'INSPECTION',
-      subtitle: 'The technician checks the appliance.',
-      detail: 'Our technician arrives at your doorstep with diagnostic tools (multimeter, manifold gauges, clamp meters) to inspect the unit thoroughly.',
-      icon: <Activity className="w-4 h-4 text-[#164B70]" />
-    },
-    {
-      num: '03',
-      title: 'DIAGNOSIS',
-      subtitle: 'The actual fault is identified.',
-      detail: 'We isolate the physical or electronic root cause and explain the findings to you before starting any work. No guesswork or hidden costs.',
-      icon: <Wrench className="w-4 h-4 text-[#D9822B]" />
-    },
-    {
-      num: '04',
-      title: 'REPAIR',
-      subtitle: 'The required repair is carried out.',
-      detail: 'Work is performed using genuine spare parts where needed, following proper refrigeration and electrical safety standards.',
-      icon: <Shield className="w-4 h-4 text-[#164B70]" />
-    },
-    {
-      num: '05',
-      title: 'TEST',
-      subtitle: 'The appliance is checked after service.',
-      detail: 'The appliance runs through a full operating cycle under technician observation to verify stability, current draw, and proper function.',
-      icon: <CheckCircle className="w-4 h-4 text-[#22C55E]" />
-    }
-  ];
-
   return (
-    <section className="py-16 md:py-24 border-b border-[#CCD4D9] bg-white">
+    <section className="relative w-full bg-[#F5F5F2] text-[#181B1D] py-20 sm:py-32 border-b border-[#CCD4D9]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="text-xs font-mono uppercase tracking-wider text-[#164B70] font-semibold">
-            THE SERVICE DESK WORKFLOW
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 sm:mb-20 pb-6 border-b border-[#CCD4D9]">
+          <div className="space-y-2">
+            <span className="font-mono text-xs text-[#16496B] tracking-wider uppercase">
+              WORKFLOW / SYSTEMATIC RESOLUTION
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-bold tracking-tight text-[#181B1D]">
+              How the repair happens.
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#171A1D] mt-1.5">
-            From Problem to Working Appliance
-          </h2>
-          <p className="text-sm sm:text-base text-[#171A1D]/75 mt-2">
-            Every service visit follows a systematic 5-stage diagnostic protocol to avoid guesswork and unnecessary component replacements.
-          </p>
+          <div className="mt-4 sm:mt-0 font-mono text-xs sm:text-sm text-[#181B1D]/60 max-w-xs">
+            From your first phone call to complete functional verification at your doorstep.
+          </div>
         </div>
 
-        {/* Ticket-like Flow Container */}
-        <div className="border border-[#CCD4D9] bg-[#F6F7F5] p-4 sm:p-8 relative">
+        {/* Large Horizontal Service Timeline (Desktop) & Vertical (Mobile) */}
+        <div className="relative">
           
-          {/* Ticket Header Bar */}
-          <div className="flex flex-wrap items-center justify-between pb-4 mb-6 border-b border-[#CCD4D9] text-xs font-mono gap-2">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 bg-[#164B70]"></span>
-              <span className="font-semibold text-[#171A1D]">STANDARD OPERATING PROCEDURE</span>
-              <span className="text-[#CCD4D9]">/</span>
-              <span className="text-[#171A1D]/60">SOP-BTR-2026</span>
-            </div>
-            <div className="text-[#171A1D]/60">
-              AUDITED: 5 STAGES · DOORSTEP EXECUTION
-            </div>
-          </div>
+          {/* Subtle connecting line running through steps on Desktop */}
+          <div className="hidden lg:block absolute top-[28px] left-[4%] right-[4%] h-px bg-[#BEC8CD]/80 z-0" />
 
-          {/* Desktop: 5 Sequential Columns / Mobile: Stacked with Ticket Perforations */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
-            {steps.map((step, idx) => (
-              <div 
-                key={step.num}
-                className="bg-white border border-[#CCD4D9] p-5 flex flex-col justify-between relative group hover:border-[#164B70] transition-colors"
+          {/* Steps Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-6 relative z-10">
+            {TIMELINE_STEPS.map((step, idx) => (
+              <div
+                key={step.number}
+                className="relative flex flex-col pt-2 lg:pt-0 pl-6 lg:pl-0 border-l lg:border-l-0 border-[#BEC8CD] lg:border-transparent group"
               >
-                {/* Step indicator top */}
-                <div>
-                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#CCD4D9]/60">
-                    <span className="font-mono text-sm font-bold text-[#164B70]">
-                      {step.num}
-                    </span>
-                    {step.icon}
+                {/* Step Marker Dot / Number */}
+                <div className="flex items-center gap-3 mb-4">
+                  {/* Small square indicator */}
+                  <div className="w-3.5 h-3.5 bg-[#F5F5F2] border border-[#16496B] flex items-center justify-center -ml-[31px] lg:ml-0 group-hover:bg-[#16496B] transition-colors">
+                    <div className="w-1.5 h-1.5 bg-[#D17A2A]" />
                   </div>
-
-                  <h3 className="font-mono text-xs font-bold tracking-wider text-[#171A1D] uppercase">
-                    {step.title}
-                  </h3>
-
-                  <div className="text-xs font-semibold text-[#164B70] mt-1">
-                    {step.subtitle}
-                  </div>
-
-                  <p className="text-xs text-[#171A1D]/70 mt-2 leading-relaxed">
-                    {step.detail}
-                  </p>
+                  
+                  {/* Large Number */}
+                  <span className="font-mono text-2xl sm:text-3xl font-bold text-[#16496B]">
+                    {step.number}
+                  </span>
                 </div>
 
-                {/* Arrow indicator between steps */}
-                {idx < steps.length - 1 && (
-                  <div className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-6 h-6 rounded-none bg-[#F6F7F5] border border-[#CCD4D9] items-center justify-center text-[#164B70] text-xs font-mono">
-                    →
-                  </div>
-                )}
+                {/* Short Title */}
+                <h3 className="text-lg sm:text-xl font-bold tracking-tight text-[#181B1D] mb-2 uppercase">
+                  {step.title}
+                </h3>
 
-                {idx < steps.length - 1 && (
-                  <div className="md:hidden flex justify-center py-2 text-[#CCD4D9]">
-                    <ArrowDown className="w-4 h-4 text-[#164B70]" />
-                  </div>
-                )}
+                {/* One Short Sentence */}
+                <p className="text-sm text-[#181B1D]/75 leading-relaxed font-normal">
+                  {step.sentence}
+                </p>
               </div>
             ))}
-          </div>
-
-          {/* Ticket Footer Verification Stamp */}
-          <div className="mt-6 pt-4 border-t border-[#CCD4D9] flex flex-wrap items-center justify-between text-[11px] font-mono text-[#171A1D]/60 gap-3">
-            <span>VERIFIED ON-SITE WITH CALIBRATED EQUIPMENT</span>
-            <span className="text-[#164B70] font-semibold">HONEST DIAGNOSIS · STANDARD CHARGES</span>
           </div>
 
         </div>

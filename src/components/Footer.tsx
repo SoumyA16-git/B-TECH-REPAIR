@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, MapPin, Clock, Star, Wrench } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import { BUSINESS_INFO } from '../data/repairData';
 import { ServiceId } from '../types';
 
@@ -10,177 +10,103 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenBooking }) => {
   return (
-    <footer className="bg-[#171A1D] text-[#DCE4E9] pt-16 pb-24 md:pb-16 border-t border-[#333A40]">
+    <footer className="w-full bg-[#181B1D] text-[#F5F5F2] border-t border-[#333A40] pt-16 pb-24 sm:pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-[#333A40]">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-8 pb-12 border-b border-[#333A40]">
           
-          {/* Brand & Overview */}
-          <div className="lg:col-span-2 space-y-4">
-            <button
-              onClick={() => onNavigate('home')}
-              className="text-left group cursor-pointer"
-            >
-              <span className="font-bold text-xl tracking-tight text-white group-hover:text-[#DCE4E9]">
-                B-TECH REPAIR
-              </span>
-            </button>
-            <p className="text-xs text-[#DCE4E9]/70 leading-relaxed max-w-sm">
-              Doorstep appliance diagnosis and technical repair service based in Patia, Bhubaneswar. Dedicated to component-level troubleshooting, genuine parts, and honest transparent billing.
-            </p>
-
-            <div className="pt-2 flex items-center gap-3">
-              <div className="flex text-[#D9822B]">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                ))}
-              </div>
-              <span className="text-xs font-mono text-white">
-                5.0 ★ · 468 Google Reviews
-              </span>
+          {/* Brand & Identity */}
+          <div className="md:col-span-4 space-y-3">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-[#F5F5F2]">
+              B-TECH REPAIR
+            </h2>
+            <div className="font-mono text-xs text-[#BEC8CD]/80 space-y-1">
+              <div>FIELD TECHNICAL SERVICE · PATIA</div>
+              <div>5.0 ★ · 468 GOOGLE REVIEWS</div>
             </div>
           </div>
 
-          {/* Services Column */}
-          <div className="space-y-3">
-            <div className="text-[11px] font-mono text-[#D9822B] uppercase tracking-wider">
-              SERVICES
+          {/* Core Services Index */}
+          <div className="md:col-span-4 space-y-2 font-mono text-xs sm:text-sm tracking-wider uppercase text-[#DCE2E5]">
+            <div>
+              <button
+                onClick={() => onNavigate('service', 'ac-repair')}
+                className="hover:text-[#D17A2A] transition-colors cursor-pointer"
+              >
+                AC REPAIR & JET PUMP
+              </button>
             </div>
-            <ul className="space-y-2 text-xs text-[#DCE4E9]/80">
-              <li>
-                <button
-                  onClick={() => onNavigate('service', 'ac-repair')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  AC Repair & Service
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('service', 'ac-jet-pump-cleaning')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  AC Jet Pump Deep Wash
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('service', 'ac-installation')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  AC Installation & Piping
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('service', 'refrigerator-repair')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  Refrigerator Repair
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('service', 'washing-machine-repair')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  Washing Machine Repair
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('service', 'microwave-repair')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  Microwave Oven Repair
-                </button>
-              </li>
-            </ul>
+            <div>
+              <button
+                onClick={() => onNavigate('service', 'refrigerator-repair')}
+                className="hover:text-[#D17A2A] transition-colors cursor-pointer"
+              >
+                REFRIGERATOR
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => onNavigate('service', 'washing-machine-repair')}
+                className="hover:text-[#D17A2A] transition-colors cursor-pointer"
+              >
+                WASHING MACHINE
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => onNavigate('service', 'microwave-repair')}
+                className="hover:text-[#D17A2A] transition-colors cursor-pointer"
+              >
+                MICROWAVE
+              </button>
+            </div>
           </div>
 
-          {/* Quick Links Column */}
-          <div className="space-y-3">
-            <div className="text-[11px] font-mono text-[#D9822B] uppercase tracking-wider">
-              REPAIR DESK
+          {/* Address & Direct Phone */}
+          <div className="md:col-span-4 space-y-4 font-mono text-xs sm:text-sm text-[#BEC8CD]">
+            <div className="leading-relaxed">
+              Nandankanan Rd, near Koel Campus<br />
+              Sishu Vihar, Patia<br />
+              Bhubaneswar, Odisha 751024
             </div>
-            <ul className="space-y-2 text-xs text-[#DCE4E9]/80">
-              <li>
-                <button
-                  onClick={() => onNavigate('about')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  About B-Tech Repair
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('reviews')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  Verified Reviews (468)
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('service-areas')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  Bhubaneswar & Cuttack Areas
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('contact')}
-                  className="hover:text-white transition-colors cursor-pointer text-left"
-                >
-                  Service Intake Desk
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={onOpenBooking}
-                  className="text-[#D9822B] hover:underline cursor-pointer text-left font-medium"
-                >
-                  Book Doorstep Visit →
-                </button>
-              </li>
-            </ul>
-          </div>
 
-          {/* Contact Details */}
-          <div className="space-y-3">
-            <div className="text-[11px] font-mono text-[#D9822B] uppercase tracking-wider">
-              HUB CONTACT
-            </div>
-            <div className="space-y-2 text-xs text-[#DCE4E9]/80">
-              <div className="flex items-start gap-2">
-                <MapPin className="w-3.5 h-3.5 text-[#D9822B] shrink-0 mt-0.5" />
-                <span>Near Koel Campus, Sishu Vihar, Patia, Bhubaneswar 751024</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-[#D9822B] shrink-0" />
-                <a href={`tel:${BUSINESS_INFO.phoneClean}`} className="font-mono text-white hover:underline">
-                  {BUSINESS_INFO.phone}
-                </a>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-3.5 h-3.5 text-[#D9822B] shrink-0" />
-                <span>Mon – Sun: 8:00 AM – 9:00 PM</span>
-              </div>
+            <div>
+              <a
+                href={`tel:${BUSINESS_INFO.phoneClean}`}
+                className="inline-flex items-center gap-2 text-base font-bold text-[#F5F5F2] hover:text-[#D17A2A] transition-colors"
+              >
+                <Phone className="w-4 h-4 text-[#D17A2A]" />
+                <span>{BUSINESS_INFO.phone}</span>
+              </a>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-[#DCE4E9]/50 gap-4">
+        {/* Bottom Metadata & Legal hairline */}
+        <div className="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs font-mono text-[#BEC8CD]/60 gap-4">
           <div>
-            © {new Date().getFullYear()} B-Tech Repair. All rights reserved. Doorstep Service in Bhubaneswar & Cuttack.
+            © {new Date().getFullYear()} B-TECH REPAIR · BHUBANESWAR, ODISHA
           </div>
-          <div className="flex items-center gap-4">
-            <span>PATIA · CHANDRASEKHARPUR · CUTTACK</span>
-            <span>·</span>
-            <span>HONEST DIAGNOSIS</span>
+          <div className="flex gap-6">
+            <button
+              onClick={() => onNavigate('about')}
+              className="hover:text-[#F5F5F2] cursor-pointer"
+            >
+              ABOUT REPAIR DESK
+            </button>
+            <button
+              onClick={() => onNavigate('service-areas')}
+              className="hover:text-[#F5F5F2] cursor-pointer"
+            >
+              SERVICE AREAS
+            </button>
+            <button
+              onClick={() => onNavigate('contact')}
+              className="hover:text-[#F5F5F2] cursor-pointer"
+            >
+              CONTACT & INTAKE
+            </button>
           </div>
         </div>
 

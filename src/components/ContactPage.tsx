@@ -1,327 +1,297 @@
 import React, { useState } from 'react';
-import { Phone, MapPin, Clock, ArrowLeft, MessageSquare, CheckCircle, ShieldCheck } from 'lucide-react';
+import { Phone, ArrowLeft, ArrowUpRight, CheckCircle2, MapPin, Clock } from 'lucide-react';
 import { BUSINESS_INFO } from '../data/repairData';
-import { ApplianceCategory, BookingTicket } from '../types';
+import { REPAIR_IMAGES } from '../data/repairImages';
+import { ApplianceCategory } from '../types';
 
 interface ContactPageProps {
   onBack: () => void;
 }
 
 export const ContactPage: React.FC<ContactPageProps> = ({ onBack }) => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [appliance, setAppliance] = useState<ApplianceCategory>('AC');
-  const [problemDesc, setProblemDesc] = useState('');
-  const [location, setLocation] = useState('');
-  const [preferredDate, setPreferredDate] = useState('');
-  const [preferredTime, setPreferredTime] = useState('Today / Within 90 mins');
-  const [ticket, setTicket] = useState<BookingTicket | null>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    appliance: 'AC' as ApplianceCategory,
+    location: '',
+    problem: '',
+    preferredDate: '',
+    preferredTime: 'Morning (8:00 AM – 12:00 PM)'
+  });
+
+  const [submittedTicket, setSubmittedTicket] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !phone.trim() || !location.trim()) return;
+    if (!formData.name || !formData.phone) return;
 
-    const randomNum = Math.floor(1000 + Math.random() * 9000);
-    const newTicket: BookingTicket = {
-      ticketId: `BTR-${randomNum}`,
-      customerName: name,
-      phone: phone,
-      appliance: appliance,
-      problemDesc: problemDesc || 'Appliance fault diagnosis requested',
-      location: location,
-      preferredDate: preferredDate || 'Today',
-      preferredTime: preferredTime,
-      createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      status: 'Received'
-    };
-    setTicket(newTicket);
+    const ticketNumber = `BT-${Math.floor(100000 + Math.random() * 900000)}`;
+    setSubmittedTicket(ticketNumber);
   };
 
-  const createWhatsAppLink = (t: BookingTicket) => {
-    const text = encodeURIComponent(
-      `Hello B-Tech Repair Desk, I booked Service Ticket #${t.ticketId}.\n` +
-      `Name: ${t.customerName}\n` +
-      `Phone: ${t.phone}\n` +
-      `Appliance: ${t.appliance}\n` +
-      `Problem: ${t.problemDesc}\n` +
-      `Location: ${t.location}\n` +
-      `Preferred Time: ${t.preferredTime}`
-    );
-    return `https://wa.me/917205719060?text=${text}`;
+  const handleWhatsAppSend = () => {
+    const text = `Hello B-Tech Repair, I would like to book a doorstep service:
+Ticket: ${submittedTicket}
+Name: ${formData.name}
+Phone: ${formData.phone}
+Appliance: ${formData.appliance}
+Location: ${formData.location}
+Problem: ${formData.problem || 'Standard inspection'}
+Preferred: ${formData.preferredDate} (${formData.preferredTime})`;
+
+    window.open(`https://wa.me/917205719060?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   return (
-    <div className="py-12 md:py-20 bg-[#F6F7F5] min-h-screen">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <div className="py-12 sm:py-20 bg-[#F5F5F2] min-h-screen text-[#181B1D]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
-        {/* Navigation Breadcrumb */}
+        {/* Breadcrumb Header */}
         <div className="flex items-center justify-between border-b border-[#CCD4D9] pb-4">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 text-xs font-mono text-[#164B70] hover:underline cursor-pointer"
+            className="flex items-center gap-2 font-mono text-xs text-[#16496B] hover:text-[#181B1D] cursor-pointer"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>BACK TO MAIN DESK</span>
+            <ArrowLeft className="w-4 h-4" />
+            <span>BACK TO HOME INDEX</span>
           </button>
 
-          <span className="text-xs font-mono text-[#171A1D]/60">
-            DIRECT SERVICE DESK
-          </span>
+          <div className="font-mono text-xs text-[#181B1D]/60 uppercase">
+            PATIA DISPATCH DESK · LIVE INTAKE
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Diagnostic Intake Form Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
-          {/* Left Column: Direct Service Intake Form */}
-          <div className="lg:col-span-7 bg-white border border-[#CCD4D9] p-6 sm:p-8">
-            {ticket ? (
-              <div className="space-y-6">
-                <div className="border-2 border-dashed border-[#164B70] bg-[#F6F7F5] p-6 space-y-4">
-                  <div className="flex justify-between items-center pb-3 border-b border-[#CCD4D9]">
-                    <div>
-                      <div className="text-[10px] font-mono text-[#D9822B] uppercase">SERVICE TICKET</div>
-                      <div className="text-2xl font-bold font-mono text-[#164B70]">
-                        #{ticket.ticketId}
-                      </div>
-                    </div>
-                    <span className="px-2.5 py-0.5 text-xs font-mono font-semibold bg-[#22C55E]/15 text-[#15803D] border border-[#22C55E]/40">
-                      REGISTERED
-                    </span>
-                  </div>
+          {/* Left Column: Heading and Intake Form */}
+          <div className="lg:col-span-7 space-y-8">
+            <div className="space-y-2">
+              <span className="font-mono text-xs text-[#16496B] uppercase tracking-wider">
+                SERVICE INTAKE / DOORSTEP DISPATCH
+              </span>
+              <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#181B1D]">
+                Tell us what's wrong.
+              </h1>
+              <p className="text-sm sm:text-base text-[#181B1D]/70 font-mono pt-1">
+                Fill in the appliance symptoms below. We assign an on-duty technician for diagnostic visit.
+              </p>
+            </div>
 
-                  <div className="grid grid-cols-2 gap-3 text-xs font-mono">
-                    <div>
-                      <span className="text-[#171A1D]/50 block text-[10px]">NAME</span>
-                      <span className="font-semibold text-[#171A1D]">{ticket.customerName}</span>
-                    </div>
-                    <div>
-                      <span className="text-[#171A1D]/50 block text-[10px]">PHONE</span>
-                      <span className="font-semibold text-[#171A1D]">{ticket.phone}</span>
-                    </div>
-                    <div>
-                      <span className="text-[#171A1D]/50 block text-[10px]">APPLIANCE</span>
-                      <span className="font-semibold text-[#164B70]">{ticket.appliance}</span>
-                    </div>
-                    <div>
-                      <span className="text-[#171A1D]/50 block text-[10px]">LOCATION</span>
-                      <span className="font-semibold text-[#171A1D]">{ticket.location}</span>
-                    </div>
-                    <div className="col-span-2">
-                      <span className="text-[#171A1D]/50 block text-[10px]">PROBLEM</span>
-                      <p className="font-sans text-xs text-[#171A1D]">{ticket.problemDesc}</p>
-                    </div>
-                  </div>
+            {submittedTicket ? (
+              <div className="p-8 bg-white border border-[#16496B] space-y-6">
+                <div className="flex items-center gap-3 text-[#16496B]">
+                  <CheckCircle2 className="w-7 h-7 text-[#D17A2A]" />
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#181B1D]">
+                    Service Intake Received
+                  </h3>
                 </div>
 
-                <div className="text-xs text-[#171A1D]/80 space-y-1">
-                  <p className="font-semibold text-[#164B70]">
-                    ✓ Ticket recorded on the Patia Service Desk.
-                  </p>
-                  <p>
-                    Our coordinator will confirm technician arrival timing by phone.
-                  </p>
+                <div className="p-4 bg-[#F5F5F2] border border-[#CCD4D9] font-mono text-xs space-y-2">
+                  <div className="text-[#D17A2A] font-bold text-sm">
+                    TICKET REF: {submittedTicket}
+                  </div>
+                  <div>Customer: {formData.name} ({formData.phone})</div>
+                  <div>Appliance: {formData.appliance}</div>
+                  <div>Location: {formData.location}</div>
+                  <div>Details: {formData.problem || 'Doorstep inspection request'}</div>
+                  <div>Preferred Schedule: {formData.preferredDate} ({formData.preferredTime})</div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                  <a
-                    href={createWhatsAppLink(ticket)}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 py-3 px-4 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-semibold text-center transition-colors flex items-center justify-center gap-2"
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    <span>Send on WhatsApp</span>
-                  </a>
-
+                <div className="pt-2 flex flex-col sm:flex-row gap-4">
                   <button
-                    onClick={() => setTicket(null)}
-                    className="py-3 px-4 border border-[#CCD4D9] hover:bg-[#F6F7F5] text-xs font-mono text-[#171A1D] cursor-pointer"
+                    onClick={handleWhatsAppSend}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#16496B] hover:bg-[#123852] text-white text-xs font-mono tracking-wider transition-colors cursor-pointer"
                   >
-                    Book Another Service
+                    <span>TRANSMIT VIA WHATSAPP →</span>
                   </button>
+
+                  <a
+                    href={`tel:${BUSINESS_INFO.phoneClean}`}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 border border-[#181B1D] text-[#181B1D] text-xs font-mono tracking-wider hover:bg-[#181B1D] hover:text-white transition-colors"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>CALL DISPATCH DESK</span>
+                  </a>
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                  <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#171A1D]">
-                    Tell Us What's Not Working.
-                  </h1>
-                  <p className="text-xs sm:text-sm text-[#171A1D]/70 mt-1">
-                    Doorstep technician dispatch across Bhubaneswar, Patia & Cuttack.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-mono text-[#171A1D]/70 uppercase">
-                      Name *
+              <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 sm:p-10 border border-[#CCD4D9]">
+                
+                {/* NAME & PHONE */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-1.5">
+                    <label className="block font-mono text-xs uppercase tracking-wider text-[#181B1D]/80">
+                      NAME *
                     </label>
                     <input
                       type="text"
                       required
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="e.g. Priyabrata Mohapatra"
-                      className="w-full px-3.5 py-2.5 text-xs border border-[#CCD4D9] bg-white focus:outline-none focus:border-[#164B70]"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="Your full name"
+                      className="w-full px-4 py-3 bg-[#F5F5F2] border border-[#CCD4D9] text-[#181B1D] text-sm focus:outline-hidden focus:border-[#16496B]"
                     />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-mono text-[#171A1D]/70 uppercase">
-                      Phone Number *
+                  <div className="space-y-1.5">
+                    <label className="block font-mono text-xs uppercase tracking-wider text-[#181B1D]/80">
+                      PHONE NUMBER *
                     </label>
                     <input
                       type="tel"
                       required
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="e.g. 072057 19060"
-                      className="w-full px-3.5 py-2.5 text-xs border border-[#CCD4D9] bg-white focus:outline-none focus:border-[#164B70]"
+                      className="w-full px-4 py-3 bg-[#F5F5F2] border border-[#CCD4D9] text-[#181B1D] text-sm focus:outline-hidden focus:border-[#16496B]"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-mono text-[#171A1D]/70 uppercase">
-                      Appliance *
-                    </label>
-                    <select
-                      value={appliance}
-                      onChange={(e) => setAppliance(e.target.value as ApplianceCategory)}
-                      className="w-full px-3 py-2.5 text-xs border border-[#CCD4D9] bg-white focus:outline-none focus:border-[#164B70]"
-                    >
-                      <option value="AC">AC (Air Conditioner)</option>
-                      <option value="Refrigerator">Refrigerator</option>
-                      <option value="Washing Machine">Washing Machine</option>
-                      <option value="Microwave Oven">Microwave Oven</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="block text-xs font-mono text-[#171A1D]/70 uppercase">
-                      Location *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder="e.g. Koel Campus / Sailashree Vihar"
-                      className="w-full px-3.5 py-2.5 text-xs border border-[#CCD4D9] bg-white focus:outline-none focus:border-[#164B70]"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="block text-xs font-mono text-[#171A1D]/70 uppercase">
-                    Describe the Problem
+                {/* APPLIANCE OPTIONS: AC, REFRIGERATOR, WASHING MACHINE, MICROWAVE, OTHER */}
+                <div className="space-y-2">
+                  <label className="block font-mono text-xs uppercase tracking-wider text-[#181B1D]/80">
+                    APPLIANCE CATEGORY *
                   </label>
-                  <textarea
-                    rows={3}
-                    value={problemDesc}
-                    onChange={(e) => setProblemDesc(e.target.value)}
-                    placeholder="AC is running but not cooling…"
-                    className="w-full px-3.5 py-2 text-xs border border-[#CCD4D9] bg-white focus:outline-none focus:border-[#164B70]"
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {(['AC', 'Refrigerator', 'Washing Machine', 'Microwave Oven', 'Other'] as ApplianceCategory[]).map((app) => (
+                      <button
+                        type="button"
+                        key={app}
+                        onClick={() => setFormData({ ...formData, appliance: app })}
+                        className={`p-3 font-mono text-xs tracking-wider border text-left cursor-pointer transition-colors ${
+                          formData.appliance === app
+                            ? 'bg-[#181B1D] text-white border-[#181B1D]'
+                            : 'bg-[#F5F5F2] text-[#181B1D] border-[#CCD4D9] hover:border-[#16496B]'
+                        }`}
+                      >
+                        {app}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* LOCATION */}
+                <div className="space-y-1.5">
+                  <label className="block font-mono text-xs uppercase tracking-wider text-[#181B1D]/80">
+                    LOCATION / RESIDENTIAL ADDRESS *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.location}
+                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                    placeholder="e.g. Near KIIT Campus 6, Patia / Chandrasekharpur"
+                    className="w-full px-4 py-3 bg-[#F5F5F2] border border-[#CCD4D9] text-[#181B1D] text-sm focus:outline-hidden focus:border-[#16496B]"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-mono text-[#171A1D]/70 uppercase">
-                      Preferred Date
+                {/* PROBLEM DESCRIPTION */}
+                <div className="space-y-1.5">
+                  <label className="block font-mono text-xs uppercase tracking-wider text-[#181B1D]/80">
+                    PROBLEM DESCRIPTION / SYMPTOMS
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={formData.problem}
+                    onChange={(e) => setFormData({ ...formData, problem: e.target.value })}
+                    placeholder="Describe what stopped working (e.g. AC blowing warm air, fridge compressor humming, washing machine drum not spinning)..."
+                    className="w-full px-4 py-3 bg-[#F5F5F2] border border-[#CCD4D9] text-[#181B1D] text-sm focus:outline-hidden focus:border-[#16496B]"
+                  />
+                </div>
+
+                {/* PREFERRED DATE & PREFERRED TIME */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-1.5">
+                    <label className="block font-mono text-xs uppercase tracking-wider text-[#181B1D]/80">
+                      PREFERRED DATE
                     </label>
                     <input
                       type="date"
-                      value={preferredDate}
-                      onChange={(e) => setPreferredDate(e.target.value)}
-                      className="w-full px-3.5 py-2.5 text-xs border border-[#CCD4D9] bg-white focus:outline-none focus:border-[#164B70]"
+                      value={formData.preferredDate}
+                      onChange={(e) => setFormData({ ...formData, preferredDate: e.target.value })}
+                      className="w-full px-4 py-3 bg-[#F5F5F2] border border-[#CCD4D9] text-[#181B1D] text-sm focus:outline-hidden focus:border-[#16496B]"
                     />
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-mono text-[#171A1D]/70 uppercase">
-                      Preferred Time
+                  <div className="space-y-1.5">
+                    <label className="block font-mono text-xs uppercase tracking-wider text-[#181B1D]/80">
+                      PREFERRED TIME
                     </label>
                     <select
-                      value={preferredTime}
-                      onChange={(e) => setPreferredTime(e.target.value)}
-                      className="w-full px-3 py-2.5 text-xs border border-[#CCD4D9] bg-white focus:outline-none focus:border-[#164B70]"
+                      value={formData.preferredTime}
+                      onChange={(e) => setFormData({ ...formData, preferredTime: e.target.value })}
+                      className="w-full px-4 py-3 bg-[#F5F5F2] border border-[#CCD4D9] text-[#181B1D] text-sm focus:outline-hidden focus:border-[#16496B]"
                     >
-                      <option value="Today / Within 90 mins">Today / Within 90 mins</option>
-                      <option value="Morning 9 AM – 12 PM">Morning 9 AM – 12 PM</option>
-                      <option value="Afternoon 12 PM – 3 PM">Afternoon 12 PM – 3 PM</option>
-                      <option value="Evening 3 PM – 7 PM">Evening 3 PM – 7 PM</option>
+                      <option value="Morning (8:00 AM – 12:00 PM)">Morning (8:00 AM – 12:00 PM)</option>
+                      <option value="Afternoon (12:00 PM – 4:00 PM)">Afternoon (12:00 PM – 4:00 PM)</option>
+                      <option value="Evening (4:00 PM – 8:00 PM)">Evening (4:00 PM – 8:00 PM)</option>
+                      <option value="Urgent Dispatch (Next Available)">Urgent Dispatch (Next Available)</option>
                     </select>
                   </div>
                 </div>
 
-                <div className="pt-2">
+                {/* Large Button: REQUEST SERVICE */}
+                <div className="pt-4">
                   <button
                     type="submit"
-                    className="w-full py-3.5 px-6 bg-[#164B70] hover:bg-[#103753] text-white text-xs font-semibold tracking-wide uppercase transition-colors cursor-pointer"
+                    className="w-full py-4 bg-[#16496B] hover:bg-[#123852] text-white font-mono text-sm uppercase tracking-wider transition-colors cursor-pointer"
                   >
-                    Request Service
+                    REQUEST SERVICE
                   </button>
                 </div>
 
-                {/* Below the form: Prefer to call? 072057 19060 */}
-                <div className="pt-4 border-t border-[#CCD4D9] text-center space-y-1">
-                  <span className="text-xs text-[#171A1D]/70">Prefer to call?</span>
-                  <div>
-                    <a
-                      href={`tel:${BUSINESS_INFO.phoneClean}`}
-                      className="text-lg font-mono font-bold text-[#164B70] hover:underline"
-                    >
-                      {BUSINESS_INFO.phone}
-                    </a>
-                  </div>
-                </div>
               </form>
             )}
           </div>
 
-          {/* Right Column: Physical Service Desk & Verification Info */}
+          {/* Right Column: Phone 072057 19060 with Large Image of Technician Tools */}
           <div className="lg:col-span-5 space-y-6">
             
-            <div className="bg-white border border-[#CCD4D9] p-6 space-y-4">
-              <div className="flex items-center gap-2 text-xs font-mono text-[#164B70] font-semibold">
-                <MapPin className="w-4 h-4 text-[#D9822B]" />
-                <span>SERVICE HUB ADDRESS</span>
-              </div>
+            {/* Direct Phone Block */}
+            <div className="p-8 bg-[#181B1D] text-[#F5F5F2] border border-[#333A40] space-y-4">
+              <span className="font-mono text-xs text-[#D17A2A] uppercase tracking-wider">
+                IMMEDIATE FIELD CONTACT
+              </span>
               <div>
-                <h3 className="text-base font-bold text-[#171A1D]">
-                  B-Tech Repair
-                </h3>
-                <p className="text-xs text-[#171A1D]/75 mt-1 leading-relaxed">
-                  {BUSINESS_INFO.address}
-                </p>
+                <span className="text-xs font-mono text-[#BEC8CD] block mb-1">
+                  CALL DIRECTLY FOR SAME-DAY DISPATCH
+                </span>
+                <a
+                  href={`tel:${BUSINESS_INFO.phoneClean}`}
+                  className="text-2xl sm:text-3xl font-bold tracking-tight text-[#F5F5F2] hover:text-[#D17A2A] transition-colors flex items-center gap-3"
+                >
+                  <Phone className="w-6 h-6 text-[#D17A2A]" />
+                  <span>{BUSINESS_INFO.phone}</span>
+                </a>
               </div>
-
-              <div className="pt-3 border-t border-[#CCD4D9] text-xs font-mono space-y-1.5 text-[#171A1D]/70">
-                <div className="flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5 text-[#164B70]" />
-                  <span>{BUSINESS_INFO.hours}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-3.5 h-3.5 text-[#D9822B]" />
-                  <span>Phone: {BUSINESS_INFO.phone}</span>
-                </div>
+              <div className="font-mono text-xs text-[#BEC8CD]/80 pt-2 border-t border-[#333A40]">
+                Monday to Sunday: 8:00 AM – 9:00 PM Doorstep Availability
               </div>
             </div>
 
-            <div className="bg-white border border-[#CCD4D9] p-6 space-y-3">
-              <div className="flex items-center gap-2 text-xs font-mono text-[#164B70] font-semibold">
-                <ShieldCheck className="w-4 h-4 text-[#164B70]" />
-                <span>DOORSTEP PROTOCOL</span>
+            {/* Large Image of Technician Tools */}
+            <div className="relative border border-[#CCD4D9] bg-[#181B1D] overflow-hidden aspect-[4/3]">
+              <img
+                src={REPAIR_IMAGES.technicianTools}
+                alt="Professional technician diagnostic toolset, manifold gauge and multimeter"
+                className="w-full h-full object-cover filter contrast-[1.08] brightness-[0.88]"
+              />
+              <div className="absolute bottom-3 left-3 right-3 bg-[#181B1D]/90 text-white font-mono text-[11px] p-2.5 border border-[#333A40]">
+                <span>DIAGNOSTIC & PRESSURE APPARATUS · FIELD READY</span>
               </div>
-              <ul className="text-xs text-[#171A1D]/75 space-y-2">
-                <li>• No work begun without customer approval of estimate.</li>
-                <li>• Calibrated multimeters and pressure gauges brought on-site.</li>
-                <li>• Transparent component testing in front of customer.</li>
-                <li>• Standardized service receipt generated upon completion.</li>
-              </ul>
+            </div>
+
+            {/* Workshop Address */}
+            <div className="p-5 bg-white border border-[#CCD4D9] space-y-2 font-mono text-xs text-[#181B1D]">
+              <div className="font-bold flex items-center gap-2 text-[#16496B]">
+                <MapPin className="w-4 h-4 text-[#D17A2A]" />
+                <span>WORKSHOP LOCATION</span>
+              </div>
+              <p className="text-[#181B1D]/75 leading-relaxed">
+                {BUSINESS_INFO.address}
+              </p>
             </div>
 
           </div>

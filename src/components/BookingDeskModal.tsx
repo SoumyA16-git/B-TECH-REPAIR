@@ -79,11 +79,11 @@ export const BookingDeskModal: React.FC<BookingDeskModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-white border border-[#CCD4D9] shadow-2xl my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-xs overflow-y-auto">
+      <div className="relative w-full max-w-2xl bg-white border border-[#CCD4D9] shadow-2xl my-auto max-h-[92vh] flex flex-col">
         
         {/* Modal Top Header */}
-        <div className="flex items-center justify-between px-6 py-4 bg-[#171A1D] text-white">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 bg-[#171A1D] text-white shrink-0">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 bg-[#D9822B]"></span>
             <span className="font-mono text-xs font-semibold tracking-wider">
@@ -99,9 +99,10 @@ export const BookingDeskModal: React.FC<BookingDeskModalProps> = ({
           </button>
         </div>
 
+        <div className="overflow-y-auto flex-1">
         {submittedTicket ? (
           /* Success Ticket Presentation */
-          <div className="p-6 sm:p-8 space-y-6">
+          <div className="p-4 sm:p-8 space-y-6">
             <div className="border-2 border-dashed border-[#164B70] bg-[#F6F7F5] p-6 space-y-4">
               
               <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-[#CCD4D9]">
@@ -335,6 +336,7 @@ export const BookingDeskModal: React.FC<BookingDeskModalProps> = ({
             </div>
           </form>
         )}
+        </div>
 
       </div>
     </div>

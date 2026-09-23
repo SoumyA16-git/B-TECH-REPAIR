@@ -1,128 +1,104 @@
-import React, { useState } from 'react';
-import { Star, MessageSquareQuote, Check } from 'lucide-react';
-import { VERIFIED_REVIEWS } from '../data/repairData';
-import { ApplianceCategory } from '../types';
+import React from 'react';
+import { Star, ArrowRight } from 'lucide-react';
 
 interface ReviewsSectionProps {
   onViewAllReviews?: () => void;
 }
 
+const SUPPORTING_REVIEWS = [
+  {
+    quote: "Very polite technician. Cleaned the split AC with a pressure pump inside a protective bag so no water touched the wallpaper. Cooling is completely restored.",
+    author: "Prasanta Mohapatra",
+    location: "Patia, Bhubaneswar",
+    service: "AC Jet Pump Service"
+  },
+  {
+    quote: "Diagnosed the faulty inverter PCB board instead of asking me to replace the entire compressor as another company suggested. Saved me substantial money.",
+    author: "Debabrata Rout",
+    location: "Chandrasekharpur",
+    service: "Inverter AC Repair"
+  },
+  {
+    quote: "Washing machine had a severe drain error code. He arrived within an hour, opened the pump filter, removed foreign obstruction, and checked the spin cycle before leaving.",
+    author: "Smita Jena",
+    location: "Sishu Vihar, Patia",
+    service: "Washing Machine Service"
+  }
+];
+
 export const ReviewsSection: React.FC<ReviewsSectionProps> = ({ onViewAllReviews }) => {
-  const [filter, setFilter] = useState<string>('All');
-
-  const filteredReviews = filter === 'All' 
-    ? VERIFIED_REVIEWS 
-    : VERIFIED_REVIEWS.filter(r => r.serviceTag.includes(filter));
-
   return (
-    <section id="reviews" className="py-16 md:py-24 border-b border-[#CCD4D9] bg-white">
+    <section className="relative w-full bg-[#F5F5F2] text-[#181B1D] py-14 sm:py-24 lg:py-32 border-b border-[#CCD4D9]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header with Google Trust Anchors */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div>
-            <div className="text-xs font-mono uppercase tracking-wider text-[#164B70] font-semibold">
-              UNEDITED GOOGLE VERIFIED FEEDBACK
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#171A1D] mt-1.5">
-              People Remember the Service.
-            </h2>
-            <p className="text-sm sm:text-base text-[#171A1D]/75 mt-2 max-w-xl">
-              Genuine customer impressions reflecting prompt doorstep arrival, honest diagnosis, standard service charges, and lasting repairs.
-            </p>
-          </div>
-
-          {/* 5.0 Google Score Anchor */}
-          <div className="p-4 bg-[#F6F7F5] border border-[#CCD4D9] shrink-0 self-start md:self-end">
-            <div className="flex items-center gap-2">
-              <span className="text-3xl font-bold font-mono text-[#171A1D]">5.0</span>
-              <div className="flex text-[#D9822B]">
+        {/* Top Header: 5.0 ★ / 468 REVIEWS */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between pb-6 sm:pb-8 mb-8 sm:mb-12 border-b border-[#CCD4D9] gap-4">
+          <div className="space-y-1">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <span className="text-2xl sm:text-4xl font-bold tracking-tight text-[#181B1D]">
+                5.0
+              </span>
+              <div className="flex items-center text-[#D17A2A]">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-current" />
+                  <Star key={i} className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-[#D17A2A] stroke-none" />
                 ))}
               </div>
+              <span className="font-mono text-xs sm:text-base text-[#181B1D]/60 tracking-wider uppercase">
+                468 REVIEWS ON GOOGLE
+              </span>
             </div>
-            <div className="text-xs font-mono text-[#171A1D]/60 mt-1">
-              468 REVIEWS ON GOOGLE
+            <div className="font-mono text-[10px] sm:text-xs text-[#16496B] uppercase tracking-wider">
+              VERIFIED RESIDENTIAL & COMMERCIAL ACCOUNTS
             </div>
           </div>
-        </div>
 
-        {/* Clean Filter Segmented Control */}
-        <div className="flex items-center gap-1 overflow-x-auto pb-2 mb-8 text-xs font-medium">
-          {['All', 'AC', 'AC Jet Pump', 'Washing Machine', 'Refrigerator', 'Microwave'].map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setFilter(tag)}
-              className={`px-3 py-1.5 transition-colors whitespace-nowrap cursor-pointer border ${
-                filter === tag
-                  ? 'bg-[#164B70] text-white border-[#164B70]'
-                  : 'bg-[#F6F7F5] text-[#171A1D]/70 border-[#CCD4D9] hover:bg-white hover:text-[#171A1D]'
-              }`}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-
-        {/* Reviews Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredReviews.map((review) => (
-            <div 
-              key={review.id}
-              className="border border-[#CCD4D9] bg-[#F6F7F5] p-6 flex flex-col justify-between space-y-4 hover:border-[#164B70] transition-colors"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex text-[#D9822B]">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                    ))}
-                  </div>
-                  <span className="font-mono text-[10px] text-[#171A1D]/50">
-                    {review.date}
-                  </span>
-                </div>
-
-                <div className="text-xs font-semibold text-[#164B70] border-l-2 border-[#D9822B] pl-2.5">
-                  "{review.highlight}"
-                </div>
-
-                <p className="text-xs text-[#171A1D]/80 leading-relaxed">
-                  “{review.text}”
-                </p>
-              </div>
-
-              {/* Author & Google Reference */}
-              <div className="pt-3 border-t border-[#CCD4D9] flex items-center justify-between text-xs">
-                <div>
-                  <div className="font-semibold text-[#171A1D]">
-                    {review.author}
-                  </div>
-                  {review.location && (
-                    <div className="text-[10px] font-mono text-[#171A1D]/50">
-                      {review.location}
-                    </div>
-                  )}
-                </div>
-                <span className="text-[10px] font-mono text-[#171A1D]/40">
-                  Google Review
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {onViewAllReviews && (
-          <div className="mt-10 text-center">
+          {onViewAllReviews && (
             <button
               onClick={onViewAllReviews}
-              className="py-2.5 px-6 border border-[#171A1D] hover:bg-[#171A1D] hover:text-white text-xs font-mono font-medium transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-xs font-mono text-[#16496B] hover:text-[#181B1D] underline underline-offset-4 cursor-pointer self-start sm:self-auto"
             >
-              Explore All 468 Customer Experiences →
+              <span>View all customer entries</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
+          )}
+        </div>
+
+        {/* Large Editorial Testimonial Layout (No cards with shadows) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+          
+          {/* Main Large Quote */}
+          <div className="lg:col-span-7 space-y-4 sm:space-y-6">
+            <blockquote className="text-xl sm:text-3xl lg:text-5xl font-medium tracking-tight text-[#181B1D] leading-snug">
+              “They identified the real problem and fixed my AC without recommending unnecessary part replacements.”
+            </blockquote>
+
+            <div className="pt-2 font-mono text-xs sm:text-sm text-[#181B1D]/80">
+              <div className="font-bold text-[#181B1D]">Subhasish Nayak</div>
+              <div className="text-[11px] sm:text-xs text-[#181B1D]/60">Google Review · Bhubaneswar</div>
+            </div>
+
+            <div className="pt-4 sm:pt-6 border-t border-[#CCD4D9] font-mono text-[11px] sm:text-xs text-[#181B1D]/60 space-y-1">
+              <div>SERVICE: DOORSTEP SPLIT AC DIAGNOSIS</div>
+              <div>VERIFICATION: VERIFIED PATIA LOCAL ENTRY</div>
+            </div>
           </div>
-        )}
+
+          {/* Right Column: Smaller review excerpts in a vertical column */}
+          <div className="lg:col-span-5 space-y-6 sm:space-y-8 divide-y divide-[#CCD4D9]">
+            {SUPPORTING_REVIEWS.map((rev, idx) => (
+              <div key={idx} className={idx > 0 ? "pt-6 sm:pt-8 space-y-2 sm:space-y-3" : "space-y-2 sm:space-y-3"}>
+                <p className="text-sm sm:text-base text-[#181B1D]/85 leading-relaxed font-normal">
+                  “{rev.quote}”
+                </p>
+                <div className="flex items-center justify-between font-mono text-[11px] sm:text-xs text-[#181B1D]/60 pt-1">
+                  <span className="font-semibold text-[#181B1D]">{rev.author}</span>
+                  <span>{rev.location}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+        </div>
 
       </div>
     </section>

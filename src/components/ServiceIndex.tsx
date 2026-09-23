@@ -1,164 +1,185 @@
 import React, { useState } from 'react';
-import { ArrowRight, Wrench, Wind, Refrigerator, Waves, Flame } from 'lucide-react';
-import { SERVICES_INDEX } from '../data/repairData';
+import { ArrowRight } from 'lucide-react';
 import { ServiceId } from '../types';
+import { REPAIR_IMAGES } from '../data/repairImages';
 
 interface ServiceIndexProps {
   onSelectService: (serviceId: ServiceId) => void;
-  onBookCategory: (categoryName: string) => void;
+  onBookCategory?: (category: string) => void;
 }
 
-export const ServiceIndex: React.FC<ServiceIndexProps> = ({ onSelectService, onBookCategory }) => {
-  const [activeHoverId, setActiveHoverId] = useState<ServiceId>('ac-repair');
+interface ServiceIndexRow {
+  number: string;
+  serviceId: ServiceId;
+  name: string;
+  services: string;
+  image: string;
+  tag: string;
+  meta: string;
+}
 
-  // Filter to the 4 main items (AC Repair, Refrigerator, Washing Machine, Microwave)
-  const mainServices = [
-    SERVICES_INDEX.find(s => s.id === 'ac-repair')!,
-    SERVICES_INDEX.find(s => s.id === 'refrigerator-repair')!,
-    SERVICES_INDEX.find(s => s.id === 'washing-machine-repair')!,
-    SERVICES_INDEX.find(s => s.id === 'microwave-repair')!,
-  ];
+const SERVICE_ROWS: ServiceIndexRow[] = [
+  {
+    number: '01',
+    serviceId: 'ac-repair',
+    name: 'AIR CONDITIONER',
+    services: 'Repair / Service / Cleaning / Jet Pump',
+    image: REPAIR_IMAGES.acIndoorUnit,
+    tag: 'HVAC & COOLING',
+    meta: 'Split, Inverter & Window units'
+  },
+  {
+    number: '02',
+    serviceId: 'refrigerator-repair',
+    name: 'REFRIGERATOR',
+    services: 'Repair / Service / Compressor / Gas Leakage',
+    image: REPAIR_IMAGES.refrigeratorCooling,
+    tag: 'REFRIGERATION',
+    meta: 'Single door, Double door, Side-by-side'
+  },
+  {
+    number: '03',
+    serviceId: 'washing-machine-repair',
+    name: 'WASHING MACHINE',
+    services: 'Repair / Service / Drum & Motor / Drain Issues',
+    image: REPAIR_IMAGES.washingMachineDrum,
+    tag: 'LAUNDRY',
+    meta: 'Front load, Top load & Semi-automatic'
+  },
+  {
+    number: '04',
+    serviceId: 'microwave-repair',
+    name: 'MICROWAVE OVEN',
+    services: 'Repair / Service / Heating & Magnetron / PCB Panel',
+    image: REPAIR_IMAGES.microwaveCavity,
+    tag: 'THERMAL & PCB',
+    meta: 'Solo, Grill & Convection models'
+  }
+];
 
-  const activeService = SERVICES_INDEX.find(s => s.id === activeHoverId) || mainServices[0];
-
-  const getServiceIcon = (id: ServiceId) => {
-    switch (id) {
-      case 'ac-repair':
-      case 'ac-jet-pump-cleaning':
-      case 'ac-installation':
-        return <Wind className="w-5 h-5 text-[#164B70]" />;
-      case 'refrigerator-repair':
-        return <Refrigerator className="w-5 h-5 text-[#164B70]" />;
-      case 'washing-machine-repair':
-        return <Waves className="w-5 h-5 text-[#164B70]" />;
-      case 'microwave-repair':
-        return <Flame className="w-5 h-5 text-[#164B70]" />;
-      default:
-        return <Wrench className="w-5 h-5 text-[#164B70]" />;
-    }
-  };
+export const ServiceIndex: React.FC<ServiceIndexProps> = ({ onSelectService }) => {
+  const [hoveredIdx, setHoveredIdx] = useState<number>(0);
 
   return (
-    <section id="services-index" className="py-16 md:py-24 border-b border-[#CCD4D9] bg-[#F6F7F5]">
+    <section id="services-index" className="relative w-full bg-[#F5F5F2] text-[#181B1D] py-20 sm:py-32 border-b border-[#CCD4D9]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="mb-10 sm:mb-14">
-          <div className="text-xs font-mono uppercase tracking-wider text-[#164B70] font-semibold">
-            APPLIANCE SERVICE INDEX
+        {/* Section Heading & Context */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-20 pb-6 border-b border-[#CCD4D9]">
+          <div className="space-y-2">
+            <span className="font-mono text-xs text-[#16496B] tracking-wider uppercase">
+              INDEX 01 / SELECT AN APPLIANCE
+            </span>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#181B1D]">
+              What's not working?
+            </h2>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-[#171A1D] mt-1.5">
-            What Needs Fixing?
-          </h2>
-          <p className="text-sm sm:text-base text-[#171A1D]/70 mt-2 max-w-2xl">
-            Select an appliance category to view diagnostic procedures, common breakdown indicators, and doorstep repair options.
-          </p>
+          <div className="mt-4 md:mt-0 font-mono text-xs sm:text-sm text-[#181B1D]/60 max-w-sm">
+            Select an equipment type to inspect common fault symptoms, diagnostic methods, and service procedures.
+          </div>
         </div>
 
-        {/* Desktop Layout: Asymmetric Service Index + Live Diagnostic Preview */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Oversized Service Index with Dynamic Visual Preview */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
-          {/* Service Rows (7 Cols) */}
-          <div className="lg:col-span-7 divide-y divide-[#CCD4D9] border-y border-[#CCD4D9]">
-            {mainServices.map((service) => {
-              const isHovered = activeHoverId === service.id;
+          {/* Left Column (or full width on mobile): Vertical Oversized Index Rows */}
+          <div className="lg:col-span-7 space-y-0 divide-y divide-[#CCD4D9]">
+            {SERVICE_ROWS.map((row, idx) => {
+              const isHovered = hoveredIdx === idx;
               return (
                 <div
-                  key={service.id}
-                  onMouseEnter={() => setActiveHoverId(service.id)}
-                  onClick={() => onSelectService(service.id)}
-                  className={`group py-6 px-3 sm:px-5 transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
-                    isHovered ? 'bg-white shadow-xs' : 'hover:bg-white/60'
+                  key={row.number}
+                  onMouseEnter={() => setHoveredIdx(idx)}
+                  onClick={() => onSelectService(row.serviceId)}
+                  className={`group relative py-6 sm:py-10 cursor-pointer transition-all duration-200 select-none ${
+                    isHovered ? 'pl-2 sm:pl-4 bg-[#EAECE9]/40' : 'pl-0'
                   }`}
                 >
-                  <div className="space-y-1.5 flex-1">
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-xs font-bold text-[#164B70]">
-                        {service.number}
+                  <div className="flex items-start sm:items-baseline justify-between gap-2">
+                    <div className="flex items-start sm:items-baseline gap-3 sm:gap-8">
+                      {/* Big Number */}
+                      <span className={`font-mono text-base sm:text-2xl font-normal transition-colors shrink-0 mt-1 sm:mt-0 ${
+                        isHovered ? 'text-[#16496B] font-semibold' : 'text-[#181B1D]/40'
+                      }`}>
+                        {row.number}
                       </span>
-                      <span className="text-[#CCD4D9]">/</span>
-                      <span className="font-semibold text-lg sm:text-xl text-[#171A1D] group-hover:text-[#164B70] transition-colors">
-                        {service.category === 'AC' ? 'Air Conditioner' : service.category}
-                      </span>
+
+                      {/* Appliance Name */}
+                      <div>
+                        <h3 className={`text-xl sm:text-4xl lg:text-5xl font-bold tracking-tight transition-all duration-200 ${
+                          isHovered ? 'text-[#181B1D] translate-x-0.5 sm:translate-x-1' : 'text-[#181B1D]/90'
+                        }`}>
+                          {row.name}
+                        </h3>
+
+                        {/* Services Detail Subline */}
+                        <p className={`mt-1 font-mono text-xs sm:text-sm transition-colors ${
+                          isHovered ? 'text-[#16496B]' : 'text-[#181B1D]/60'
+                        }`}>
+                          {row.services}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="text-sm font-medium text-[#171A1D]/90">
-                      {service.title}
+                    {/* Arrow Indicator */}
+                    <div className="flex items-center pl-2 shrink-0 pt-1 sm:pt-0">
+                      <ArrowRight className={`w-5 h-5 sm:w-8 sm:h-8 transition-all duration-200 ${
+                        isHovered ? 'translate-x-1 sm:translate-x-2 text-[#16496B]' : 'text-[#CCD4D9] group-hover:text-[#181B1D]'
+                      }`} />
                     </div>
-
-                    <p className="text-xs text-[#171A1D]/60 max-w-xl line-clamp-2">
-                      {service.shortDesc}
-                    </p>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs font-mono font-medium text-[#164B70] shrink-0 pt-2 sm:pt-0">
-                    <span className="group-hover:underline">Explore {service.category} Services</span>
-                    <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                  {/* Mobile Preview Image (shown directly under active item on small screens) */}
+                  <div className="block lg:hidden mt-3 pt-2.5 border-t border-[#CCD4D9]/60">
+                    <div className="relative h-36 sm:h-44 w-full overflow-hidden bg-[#181B1D]">
+                      <img
+                        src={row.image}
+                        alt={row.name}
+                        className="w-full h-full object-cover filter contrast-[1.05]"
+                        loading="lazy"
+                      />
+                      <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-[#181B1D]/90 text-[#F5F5F2] font-mono text-[10px]">
+                        {row.tag} · {row.meta}
+                      </div>
+                    </div>
                   </div>
                 </div>
               );
             })}
           </div>
 
-          {/* Side Technical Preview Panel (5 Cols) */}
-          <div className="lg:col-span-5 bg-white border border-[#CCD4D9] p-6 space-y-5">
-            <div className="flex items-center justify-between pb-3 border-b border-[#CCD4D9]">
-              <div className="flex items-center gap-2">
-                {getServiceIcon(activeService.id)}
-                <span className="font-mono text-xs font-semibold text-[#171A1D]">
-                  DIAGNOSTIC SPEC SHEET · {activeService.number}
-                </span>
-              </div>
-              <span className="text-[11px] font-mono text-[#D9822B] bg-[#FFF6ED] px-2 py-0.5 border border-[#D9822B]/30">
-                ACTIVE
-              </span>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-bold text-[#171A1D]">
-                {activeService.title}
-              </h3>
-              <p className="text-xs text-[#171A1D]/75 mt-1 leading-relaxed">
-                {activeService.fullDesc}
-              </p>
-            </div>
-
-            {/* Typical Faults */}
-            <div className="space-y-2">
-              <span className="block text-[11px] font-mono uppercase tracking-wider text-[#171A1D]/60">
-                COMMON SYMPTOMS INSPECTED:
-              </span>
-              <ul className="text-xs text-[#171A1D]/80 space-y-1.5 pl-3 border-l-2 border-[#164B70]">
-                {activeService.commonIssues.slice(0, 3).map((issue, idx) => (
-                  <li key={idx}>· {issue}</li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Technical Parameters */}
-            <div className="bg-[#F6F7F5] border border-[#CCD4D9] p-3 text-[11px] space-y-1.5">
-              {activeService.technicalSpecs.slice(0, 2).map((spec, i) => (
-                <div key={i} className="flex justify-between gap-2">
-                  <span className="text-[#171A1D]/60 font-mono">{spec.label}:</span>
-                  <span className="font-medium text-[#171A1D] text-right">{spec.value}</span>
+          {/* Right Column: Desktop Reactive Photographic Preview Area */}
+          <div className="hidden lg:block lg:col-span-5">
+            <div className="relative border border-[#CCD4D9] p-3 bg-[#EAECE9]/60">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#181B1D]">
+                <img
+                  key={SERVICE_ROWS[hoveredIdx].serviceId}
+                  src={SERVICE_ROWS[hoveredIdx].image}
+                  alt={SERVICE_ROWS[hoveredIdx].name}
+                  className="w-full h-full object-cover filter brightness-[0.92] contrast-[1.08] transition-opacity duration-300"
+                />
+                
+                {/* Technical Annotation Badge */}
+                <div className="absolute top-3 left-3 bg-[#181B1D]/90 text-[#F5F5F2] px-3 py-1.5 font-mono text-xs flex items-center gap-2 border border-[#333A40]">
+                  <span className="w-1.5 h-1.5 bg-[#D17A2A]" />
+                  <span>{SERVICE_ROWS[hoveredIdx].tag}</span>
                 </div>
-              ))}
-            </div>
 
-            <div className="pt-2 flex items-center justify-between gap-3">
-              <button
-                onClick={() => onSelectService(activeService.id)}
-                className="flex-1 py-2.5 px-4 bg-[#171A1D] hover:bg-[#164B70] text-white text-xs font-medium text-center transition-colors cursor-pointer"
-              >
-                View Full Technical Breakdown
-              </button>
+                <div className="absolute bottom-3 left-3 right-3 bg-[#181B1D]/90 text-[#DCE2E5] p-3 border border-[#333A40] text-xs font-mono">
+                  <div className="text-[#F5F5F2] font-semibold mb-0.5">
+                    {SERVICE_ROWS[hoveredIdx].name}
+                  </div>
+                  <div className="text-[#BEC8CD] text-[11px]">
+                    {SERVICE_ROWS[hoveredIdx].meta} · Doorstep Inspection
+                  </div>
+                </div>
+              </div>
 
-              <button
-                onClick={() => onBookCategory(activeService.category)}
-                className="py-2.5 px-4 border border-[#164B70] text-[#164B70] hover:bg-[#164B70] hover:text-white text-xs font-medium transition-colors cursor-pointer"
-              >
-                Book Inspection
-              </button>
+              {/* Caption Underneath */}
+              <div className="flex justify-between items-center px-1 pt-3 text-[11px] font-mono text-[#181B1D]/60 uppercase">
+                <span>PREVIEW / LIVE WORKSHOP DATA</span>
+                <span>CLICK ROW TO INSPECT FAULTS</span>
+              </div>
             </div>
           </div>
 

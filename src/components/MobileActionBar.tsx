@@ -8,24 +8,24 @@ interface MobileActionBarProps {
 
 export const MobileActionBar: React.FC<MobileActionBarProps> = ({ onOpenBooking }) => {
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#171A1D] border-t border-[#333A40] shadow-2xl safe-area-bottom">
+    <aside aria-label="Quick contact actions" className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#181B1D] border-t border-[#333A40] shadow-2xl safe-area-bottom">
       <div className="grid grid-cols-2 h-14">
         <a
           href={`tel:${BUSINESS_INFO.phoneClean}`}
-          className="flex items-center justify-center gap-2 border-r border-[#333A40] text-white hover:bg-black/20 active:bg-black/40 transition-colors text-xs font-mono font-medium tracking-wide"
+          className="flex items-center justify-center gap-2 border-r border-[#333A40] text-[#F5F5F2] hover:bg-black/20 active:bg-black/40 transition-colors text-xs font-mono font-medium tracking-wide"
         >
-          <Phone className="w-3.5 h-3.5 text-[#D9822B]" />
+          <Phone className="w-3.5 h-3.5 text-[#D17A2A]" />
           <span>CALL {BUSINESS_INFO.phone}</span>
         </a>
 
         <button
           onClick={onOpenBooking}
-          className="flex items-center justify-center gap-1.5 bg-[#164B70] text-white hover:bg-[#103753] active:bg-[#0c293e] transition-colors text-xs font-medium tracking-wide cursor-pointer"
+          className="flex items-center justify-center gap-1.5 bg-[#16496B] text-[#F5F5F2] hover:bg-[#123852] active:bg-[#0e2c40] transition-colors text-xs font-mono tracking-wider font-semibold cursor-pointer"
         >
           <span>REQUEST SERVICE</span>
-          <ArrowUpRight className="w-3.5 h-3.5 text-white/80" />
+          <ArrowUpRight className="w-3.5 h-3.5 text-[#DCE2E5]" />
         </button>
       </div>
-    </div>
+    </aside>
   );
 };
