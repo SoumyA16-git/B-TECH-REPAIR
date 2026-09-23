@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-warm-bg: #F6F7F5;
+  --color-graphite: #171A1D;
+  --color-industrial: #164B70;
+  --color-industrial-dark: #103753;
+  --color-industrial-light: #1E5C8A;
+  --color-steel: #DCE4E9;
+  --color-border-grey: #CCD4D9;
+  --color-safety-orange: #D9822B;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-warm-bg);
+  color: var(--color-graphite);
+  margin: 0;
+  padding: 0;
+}
+
+/* Subtle hairline divider helper */
+.hairline-b {
+  border-bottom: 1px solid #CCD4D9;
+}
+.hairline-t {
+  border-top: 1px solid #CCD4D9;
+}
+.hairline-r {
+  border-right: 1px solid #CCD4D9;
+}
+.hairline-l {
+  border-left: 1px solid #CCD4D9;
+}
+.hairline-all {
+  border: 1px solid #CCD4D9;
+}
+
